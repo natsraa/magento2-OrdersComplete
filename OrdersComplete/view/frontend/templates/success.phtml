@@ -1,0 +1,132 @@
+<?php /** @var $block \Magento\Checkout\Block\Onepage\Success */ ?>
+<?php 
+$_order = $block->getOrderItemsDetails(); 
+$shipping_addresses = $_order->getShippingAddress()->getData();
+$billing_addresses = $_order->getBillingAddress()->getData();
+//print_r($shipping_addresses); 
+//print_r($billing_addresses); 
+//echo $_order->formatPrice($_order->getSubTotal());
+?>
+<div class="container"> 
+    <div class="checkout-success" style="color: #3c3c3c;">
+        <div style="width:100%;"><img class="center-block" src="https://test2.babykidsbestbuyonline.com/pub/media/wysiwyg/THbank/correct.png" width="60" height="60"></div>
+    <h1>Thank you for purchase! <span style="width:100%;"> <small>ขอขอบคุณสำหรับคำสั่งซื้อ!</small>  </span></h1>
+    <?php if ($block->getOrderId()):?>
+        <?php if ($block->getCanViewOrder()) :?>
+            <h4><?php echo __('Your order number is: %1.', sprintf('<a href="%s" class="order-number"><strong>%s</strong></a>', $block->escapeHtml($block->getViewOrderUrl()), $block->escapeHtml($block->getOrderId()))) ?></h4>
+        <?php  else :?>
+            <h4><?php echo __('Your order # is: <span>%1</span>.', $block->escapeHtml($block->getOrderId())) ?></h4>
+        <?php endif;?>
+            <p><?php /* @escapeNotVerified echo __('We\'ll email you an order confirmation with details and tracking info.')  */?> ท่านสามารถตรวจสอบรายละเอียดการยืนยันสั่งซื้อสินค้าและรายละเอียดการจัดส่งสินค้าได้จากอีเมลสั่งซื้อของท่าน</p>
+    <?php endif;?>
+    <?php echo $block->getAdditionalInfoHtml() ?>
+<div class="address-info">
+    <h3>รายละเอียดการสั่งซื้อ <small>กรุณาตรวจสอบข้อมูลการสั่งซื่อของท่าน</small></h3>
+    <h4>ข้อมูลจัดส่งสินค้า</h4>
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="caption-box" style="background-color: #f1f1f1;border-radius: 5px;margin-bottom: 2%;padding: 3%;font-size: 15px;color: #242323;font-weight: bold;">
+                <p>ที่อยู่จัดส่งสินค้า</p>
+                <p><b>ชื่อ-สกุล </b><span><?php echo $shipping_addresses["firstname"]." ".$shipping_addresses["lastname"]; ?></span></p>
+                <p><b>อีเมล </b><span><?php echo $shipping_addresses["email"]; ?></span></p>
+                <p><b>เบอร์โทรศัพท์ </b><span><?php echo $shipping_addresses["telephone"]; ?></span></p>
+                <p><b>ที่อยู่ </b><span><?php echo $shipping_addresses["street"].", ". $shipping_addresses["city"].", รหัสไปรษณีย์ ". $shipping_addresses["postcode"];  ?></span></p>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="caption-box" style="background-color: #f1f1f1;border-radius: 5px;margin-bottom: 2%;padding: 3%;font-size: 15px;color: #242323;font-weight: bold;">
+            <p>ที่อยู่กำกับภาษี</p>
+            <p><b>ชื่อ-สกุล </b><span><?php echo $billing_addresses["firstname"]." ".$billing_addresses["lastname"]; ?></span></p>
+            <p><b>อีเมล </b><span><?php echo $billing_addresses["email"]; ?></span></p>
+            <p><b>เบอร์โทรศัพท์ </b><span><?php echo $billing_addresses["telephone"]; ?></span></p>
+            <p><b>ที่อยู่ </b><span><?php echo $billing_addresses["street"].", ". $billing_addresses["city"].", รหัสไปรษณีย์ ". $billing_addresses["postcode"];  ?></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+@media screen and (max-width: 676px) {.sub-t{text-align: left;line-height: 1.5em;padding-top: 2%;"} .pay-title {text-align: left;}} 
+/*.items_info {border: 1px solid #ccc;border-radius: 4px;margin: 2% 0;padding: 2%;color: #3c3c3c;border-radius: 4px;}*/
+/*.list-group-item.col-md-12.col-sm-12.col-xs-12 {border-bottom: 1px solid #e4e4e4;border-top: none;border-left: none;border-right: none;border-radius: 0;background: transparent!important;}*/
+.list-group-item.col-md-12.col-sm-12.col-xs-12:hover{ background: transparent;}
+.pay-title {font-weight: bold;}
+/*.sum {float: right;width: 100%;padding: 2%;}*/</style>
+<div class="items_info" style="border: 1px solid #ccc;border-radius: 4px;margin: 2% 0;padding: 2%;color: #3c3c3c;border-radius: 4px;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="item-cap" style="font-size: 15px;color: #242323;">
+                <h4 style="font-weight:600;">รายการสินค้า</h4>
+                <div class="list-group">
+                <?php
+                $orderAllVisibleItems = $_order->getAllVisibleItems();
+                foreach($orderAllVisibleItems as $_item ) {
+                //print_r($_item->getData());
+                   $orders_item = $_item->getData();
+                // var_dump($orders_item);
+                // $orderid = $block->getOrderId();
+                // echo $orderid;
+                ?>
+                     <div class="list-group-item col-md-12 col-sm-12 col-xs-12" style="border-bottom: 1px solid #e4e4e4;border-top: none;border-left: none;border-right: none;border-radius: 0;background: transparent!important;">
+                      <div class="col-md-8 col-sm-8 col-xs-12">
+                      <h4 class="list-group-item-heading"><?php  echo $orders_item['name']; ?></h4>
+                      <p class="list-group-item-text"><?php  echo " ( SKU: ".$orders_item['sku']." )" ?></p>
+                      </div>
+                      <div class="sub-t col-md-2 col-sm-2 col-xs-12 text-center"> <p><?php echo  "จำนวน ".number_format($orders_item['qty_ordered'],0)." ชิ้น" ?></p></div>
+                      <div class="sub-t col-md-2 col-sm-2 col-xs-12 text-right"> <p><?php echo "ราคา ".number_format($orders_item['row_total'],2)." บาท";  ?></p> </div>
+                    </div> <?php } ?>            
+                </div>
+                   <br/>
+                   <div class="sum" style="margin-top:2%;float: right;width: 100%;padding: 2%;">
+                    <h5 class="text-right">ค่าจัดส่ง <span><?php echo " (ฟรี) ".number_format($_order->getShippingAmount(),2)." บาท"; ?></span></h5>
+                    <h3 class="text-right" style="font-weight:bold;">รวม <span><?php echo number_format($_order->getGrandTotal(),2)." บาท ";  ?></span></h3>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="info-payment" style="float: left;
+    border: 1px solid #ccc;
+    margin-bottom: 2%;
+    border-radius: 4px;">
+    <h3 class="pay-title text-center">สำหรับวิธีโอนเงินผ่านธนาคาร</h3>
+    <ul class="list-group" style="float: left;width: 100%;padding:1%;box-shadow:none;">
+        <li class="list-group-item col-md-12 col-sm-12 col-xs-12" style="border-bottom: 1px solid #e4e4e4;border-top: none;border-left: none;border-right: none;border-radius: 0;background: transparent!important;font-size: 16px;
+    font-weight: 600;">
+            <div class="col-md-4 col-sm-4 col-xs-12"><p><span><img src="https://test2.babykidsbestbuyonline.com/pub/media/wysiwyg/THbank/THbank_logo1.png" width="45"height="45"></span> ธนาคารกสิกรไทย</p></div>
+            <div class="col-md-4 col-sm-4 col-xs-12"> <p class="align-middle">บจก.เอซ-คอน ดิจิทัล (ไทยแลนด์)</p></div>
+            <div class="col-md-4 col-sm-4 col-xs-12"> <p class="align-middle">บัญชีเลขที่ 034-8-33247-3 </p></div>
+        </li>
+       <li class="list-group-item col-md-12 col-sm-12 col-xs-12" style="border-bottom: 1px solid #e4e4e4;border-top: none;border-left: none;border-right: none;border-radius: 0;background: transparent!important;font-size: 16px;
+    font-weight: 600;">
+            <div class="col-md-4 col-sm-4 col-xs-12"><p><span><img src="https://test2.babykidsbestbuyonline.com/pub/media/wysiwyg/THbank/THbank_logo2.png" width="45"height="45"></span> ธนาคารกรุงเทพ</p></div>
+            <div class="col-md-4 col-sm-4 col-xs-12"> <p class="align-middle">บจก.เอซ-คอน ดิจิทัล (ไทยแลนด์)</p></div>
+            <div class="col-md-4 col-sm-4 col-xs-12"> <p class="align-middle">บัญชีเลขที่ 177-0-82170-8 </p></div>
+        </li>
+        <li class="list-group-item col-md-12 col-sm-12 col-xs-12" style="border-bottom: 1px solid #e4e4e4;border-top: none;border-left: none;border-right: none;border-radius: 0;background: transparent!important;font-size: 16px;
+    font-weight: 600;">
+            <div class="col-md-4 col-sm-4 col-xs-12"><p><span><img src="https://test2.babykidsbestbuyonline.com/pub/media/wysiwyg/THbank/THbank_logo3.png" width="45"height="45"></span> ธนาคารไทยพาณิชย์</p></div>
+            <div class="col-md-4 col-sm-4 col-xs-12"> <p class="align-middle">บจก.เอซ-คอน ดิจิทัล (ไทยแลนด์)</p></div>
+            <div class="col-md-4 col-sm-4 col-xs-12"> <p class="align-middle">บัญชีเลขที่ 047-2-60961-8</p></div>
+        </li>
+        <li class="list-group-item col-md-12 col-sm-12 col-xs-12" style="border-bottom: 1px solid #e4e4e4;border-top: none;border-left: none;border-right: none;border-radius: 0;background: transparent!important;font-size: 16px;
+    font-weight: 600;">
+            <div class="col-md-4 col-sm-4 col-xs-12"><p><span><img src="https://test2.babykidsbestbuyonline.com/pub/media/wysiwyg/THbank/THbank_logo4.png" width="45"height="45"></span> ธนาคารกรุงไทย</p></div>
+            <div class="col-md-4 col-sm-4 col-xs-12"> <p class="align-middle">บจก.เอซ-คอน ดิจิทัล (ไทยแลนด์)</p></div>
+            <div class="col-md-4 col-sm-4 col-xs-12"> <p class="align-middle">บัญชีเลขที่ 011-0-21901-5</p></div>
+        </li>
+        <li class="list-group-item col-md-12 col-sm-12 col-xs-12" style="border-bottom:none;border-top: none;border-left: none;border-right: none;border-radius: 0;background: transparent!important;font-size: 16px;
+    font-weight: 600;">
+            <div class="col-md-4 col-sm-4 col-xs-12"><p><span><img src="https://test2.babykidsbestbuyonline.com/pub/media/wysiwyg/THbank/THbank_logo5.png" width="45"height="45"></span> ธนาคารทหารไทย</p></div>
+            <div class="col-md-4 col-sm-4 col-xs-12"> <p class="align-middle">บจก.เอซ-คอน ดิจิทัล (ไทยแลนด์)</p></div>
+            <div class="col-md-4 col-sm-4 col-xs-12"> <p class="align-middle">บัญชีเลขที่ 001-9-47849-4</p></div>
+        </li>
+    </ul>
+</div>
+<br/>
+    <div class="actions-toolbar" style="float: left;width: 100%;">
+        <div class="primary" style="float: left;width: 100%;">
+            <a class="action primary continue" href="<?php /* @escapeNotVerified */ echo $block->getUrl() ?>" style="width: 100%;font-size: 18px;"><span><?php /* @escapeNotVerified */ echo __('Continue Shopping') ?></span></a>
+        </div>
+    </div>
+</div>
+</div>
